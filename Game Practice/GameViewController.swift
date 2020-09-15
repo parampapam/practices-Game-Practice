@@ -14,6 +14,7 @@ class GameViewController: UIViewController {
     
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var scnView: SCNView!
+    @IBOutlet weak var startButton: UIButton!
     
     // Set animation duration
     var duration: TimeInterval = 5
@@ -39,6 +40,20 @@ class GameViewController: UIViewController {
         scene.rootNode.childNode(withName: "ship", recursively: true)
     }
     
+    @IBAction func onButton(_ sender: Any) {
+        duration = 5
+        score = 0
+        
+        // Hide start new game button
+        startButton.isHidden = true
+        
+        // add a tap gesture recognizer
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        scnView.addGestureRecognizer(tapGesture)
+        
+        spanShip()
+    }
+    
     func removeShip() {
         getShip?.removeFromParentNode()
     }
@@ -62,11 +77,14 @@ class GameViewController: UIViewController {
 
         // Animate the ship
         ship.runAction(.move(to: SCNVector3(), duration: duration)) {
-            print(#line, #function, "Animation ended")
+//            print(#line, #function, "Animation ended")
             self.removeShip()
             DispatchQueue.main.async {
                 self.scnView.removeGestureRecognizer(self.tapGesture)
                 self.scoreLabel.text = "Game Over!\nScore: \(self.score)"
+                
+                // Show start new game button
+                self.startButton.isHidden = false
             }
         }
     }
@@ -99,12 +117,6 @@ class GameViewController: UIViewController {
         ambientLightNode.light!.color = UIColor.darkGray
         scene.rootNode.addChildNode(ambientLightNode)
         
-        // retrieve the ship node
-//        let ship = scene.rootNode.childNode(withName: "ship", recursively: true)!
-        
-        // animate the 3d object
-//        ship.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
-        
         // set the scene to the view
         scnView.scene = scene
         
@@ -116,12 +128,6 @@ class GameViewController: UIViewController {
         
         // configure the view
         scnView.backgroundColor = UIColor.black
-        
-        // add a tap gesture recognizer
-        tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        scnView.addGestureRecognizer(tapGesture)
-        
-        spanShip()
     }
     
     @objc
@@ -146,7 +152,7 @@ class GameViewController: UIViewController {
             SCNTransaction.completionBlock = {
                 self.ship.removeAllActions()
                 self.removeShip()
-                print(#line, #function, "Ship removed")
+//                print(#line, #function, "Ship removed")
                 
                 // Increase the tempo
                 self.duration *= 0.9
