@@ -11,12 +11,71 @@ import QuartzCore
 import SceneKit
 
 class GameViewController: UIViewController {
+    
+    @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var scnView: SCNView!
+    
+    // Set animation duration
+    var duration: TimeInterval = 5
+    
+    // Score count
+    var score = 0 {
+        didSet {
+            scoreLabel.text = "Score: \(score)"
+        }
+    }
+    
+    // create a new scene
+    let scene = SCNScene(named: "art.scnassets/ship.scn")!
+    
+    // Gesture recognizer
+    var tapGesture: UITapGestureRecognizer!
+    
+    // The ship
+    var ship: SCNNode!
+    
+    // Computed property
+    var getShip: SCNNode? {
+        scene.rootNode.childNode(withName: "ship", recursively: true)
+    }
+    
+    func removeShip() {
+        getShip?.removeFromParentNode()
+    }
+    
+    func spanShip() {
+        ship = SCNScene(named: "art.scnassets/ship.scn")!.rootNode.clone()
+        
+        // Add ship to the scene
+        scene.rootNode.addChildNode(ship)
+        
+        // Position the ship
+        let x = Int.random(in: -25 ... 25)
+        let y = Int.random(in: -25 ... 25)
+        let z = -105
+        let position = SCNVector3(x, y, z)
+        ship.position = position
+        
+        // Look at position
+        let lookAtPosition = SCNVector3(2 * x, 2 * y, 2 * z)
+        ship.look(at: lookAtPosition)
 
+        // Animate the ship
+        ship.runAction(.move(to: SCNVector3(), duration: duration)) {
+            print(#line, #function, "Animation ended")
+            self.removeShip()
+            DispatchQueue.main.async {
+                self.scnView.removeGestureRecognizer(self.tapGesture)
+                self.scoreLabel.text = "Game Over!\nScore: \(self.score)"
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        // Remove the ship
+        removeShip()
         
         // create and add a camera to the scene
         let cameraNode = SCNNode()
@@ -24,7 +83,7 @@ class GameViewController: UIViewController {
         scene.rootNode.addChildNode(cameraNode)
         
         // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
+        cameraNode.position = SCNVector3(x: 0, y: 0, z: 0)
         
         // create and add a light to the scene
         let lightNode = SCNNode()
@@ -41,13 +100,10 @@ class GameViewController: UIViewController {
         scene.rootNode.addChildNode(ambientLightNode)
         
         // retrieve the ship node
-        let ship = scene.rootNode.childNode(withName: "ship", recursively: true)!
+//        let ship = scene.rootNode.childNode(withName: "ship", recursively: true)!
         
         // animate the 3d object
-        ship.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
-        
-        // retrieve the SCNView
-        let scnView = self.view as! SCNView
+//        ship.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
         
         // set the scene to the view
         scnView.scene = scene
@@ -62,14 +118,14 @@ class GameViewController: UIViewController {
         scnView.backgroundColor = UIColor.black
         
         // add a tap gesture recognizer
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scnView.addGestureRecognizer(tapGesture)
+        
+        spanShip()
     }
     
     @objc
     func handleTap(_ gestureRecognize: UIGestureRecognizer) {
-        // retrieve the SCNView
-        let scnView = self.view as! SCNView
         
         // check what nodes are tapped
         let p = gestureRecognize.location(in: scnView)
@@ -84,16 +140,22 @@ class GameViewController: UIViewController {
             
             // highlight it
             SCNTransaction.begin()
-            SCNTransaction.animationDuration = 0.5
+            SCNTransaction.animationDuration = 0.25
             
             // on completion - unhighlight
             SCNTransaction.completionBlock = {
-                SCNTransaction.begin()
-                SCNTransaction.animationDuration = 0.5
+                self.ship.removeAllActions()
+                self.removeShip()
+                print(#line, #function, "Ship removed")
                 
-                material.emission.contents = UIColor.black
+                // Increase the tempo
+                self.duration *= 0.9
+//                self.duration = 10
                 
-                SCNTransaction.commit()
+                // Increase the score
+                self.score += 1
+                
+                self.spanShip()
             }
             
             material.emission.contents = UIColor.red

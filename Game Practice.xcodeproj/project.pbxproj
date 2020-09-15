@@ -13,6 +13,8 @@
 		153BD2D92510F23E00DA8A23 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 153BD2D72510F23E00DA8A23 /* Main.storyboard */; };
 		153BD2DB2510F23F00DA8A23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 153BD2DA2510F23F00DA8A23 /* Assets.xcassets */; };
 		153BD2DE2510F23F00DA8A23 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 153BD2DC2510F23F00DA8A23 /* LaunchScreen.storyboard */; };
+		153BD2E72511216C00DA8A23 /* pic 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 153BD2E62511216C00DA8A23 /* pic 2.png */; };
+		153BD2E92511217600DA8A23 /* pic 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 153BD2E82511217600DA8A23 /* pic 1.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		153BD2DA2510F23F00DA8A23 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		153BD2DD2510F23F00DA8A23 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		153BD2DF2510F23F00DA8A23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		153BD2E62511216C00DA8A23 /* pic 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pic 2.png"; sourceTree = "<group>"; };
+		153BD2E82511217600DA8A23 /* pic 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pic 1.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,13 +62,23 @@
 			children = (
 				153BD2D12510F23E00DA8A23 /* AppDelegate.swift */,
 				153BD2D32510F23E00DA8A23 /* art.scnassets */,
-				153BD2D52510F23E00DA8A23 /* GameViewController.swift */,
-				153BD2D72510F23E00DA8A23 /* Main.storyboard */,
 				153BD2DA2510F23F00DA8A23 /* Assets.xcassets */,
-				153BD2DC2510F23F00DA8A23 /* LaunchScreen.storyboard */,
+				153BD2D52510F23E00DA8A23 /* GameViewController.swift */,
 				153BD2DF2510F23F00DA8A23 /* Info.plist */,
+				153BD2DC2510F23F00DA8A23 /* LaunchScreen.storyboard */,
+				153BD2D72510F23E00DA8A23 /* Main.storyboard */,
+				153BD2E52511213600DA8A23 /* Screenshots */,
 			);
 			path = "Game Practice";
+			sourceTree = "<group>";
+		};
+		153BD2E52511213600DA8A23 /* Screenshots */ = {
+			isa = PBXGroup;
+			children = (
+				153BD2E82511217600DA8A23 /* pic 1.png */,
+				153BD2E62511216C00DA8A23 /* pic 2.png */,
+			);
+			path = Screenshots;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -129,6 +143,8 @@
 				153BD2DE2510F23F00DA8A23 /* LaunchScreen.storyboard in Resources */,
 				153BD2DB2510F23F00DA8A23 /* Assets.xcassets in Resources */,
 				153BD2D92510F23E00DA8A23 /* Main.storyboard in Resources */,
+				153BD2E72511216C00DA8A23 /* pic 2.png in Resources */,
+				153BD2E92511217600DA8A23 /* pic 1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
